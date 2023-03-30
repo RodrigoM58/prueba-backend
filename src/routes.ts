@@ -23,4 +23,13 @@ productRoutes.get('/consulCategory', async( req: Request, res: Response)=>{
         return res.status(err.code ? err.code : 500).json(err)
     }
 })
+productRoutes.get('/consulName', async( req: Request, res: Response)=>{
+    const value: any =req.query.category
+    try{
+        const response = await productCtrl.readProductByName(value)
+        return res.status(response.code).json(response)
+    }catch(err: any){
+        return res.status(err.code ? err.code : 500).json(err)
+    }
+})
 export default productRoutes

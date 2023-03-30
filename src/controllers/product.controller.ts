@@ -40,6 +40,24 @@ export default class ProductController {
                 }
         })
     }
+    readProductByName(name: string): Promise<IResponse> {
+        const regexp = new RegExp(name, 'i')
+        return new Promise(async(resolve, reject) =>{
+            if (!name){
+                    return reject({ok: false, message: 'parametros incorrectos', response: null, code: 500 })
+                }
+                try{
+                    const result: any = await productModels.find({ name: regexp}) 
+                    if (result.length < 1){
+                        return reject({ok: false, message: 'producto no encontrado', response: null, code: 404})
+                    }
+                    return resolve({ ok: true, message: 'Producto encontrado', response: result, code: 200 })
+                }catch(e){
+                    return reject({ ok: false, message: 'Error del servidor', response: e, code:500 })
+
+                }
+        })
+    }
     
     populateProducts(): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
